@@ -9,8 +9,10 @@ module RspecRequirementFormatter
 
     def start_example_group_division(example_group, group_level)
       html = ERB.new(group_start_partial).result(binding)
-      html = "<tr><td>#{html}" unless group_level == 0
-      @body << html
+      @body << "<li class='list-group-item'>" unless group_level == 0
+      @body << "<div class='card'>"
+      @body << "<div class='card-header'>#{example_group.description}</div>"
+      @body << "<ul class='list-group'>"
     end
 
     def example_division(example)
@@ -19,8 +21,8 @@ module RspecRequirementFormatter
     end
 
     def finish_example_group_division(_example_group, group_level)
-      html = "</tbody></table>"
-      html = "#{html}</td></tr>" unless group_level == 0
+      html = "</ul></div>"
+      html << "</li>" unless group_level == 0
       @body << html
     end
 
