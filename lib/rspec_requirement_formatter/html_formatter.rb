@@ -4,8 +4,6 @@ require 'erb'
 
 module RspecRequirementFormatter
   class HtmlFormatter < RSpec::Core::Formatters::BaseFormatter
-    REQUIREMENTS_PATH = ENV['REQUIREMENTS_PATH'] || './rspec_requirements'
-
     RSpec::Core::Formatters.register self,
       :example_group_started,
       :example_started,
@@ -16,15 +14,13 @@ module RspecRequirementFormatter
 
     def initialize(output)
       super(output)
-      create_path
-      create_assets
       @example_group_number = 0
       @example_number = 0
       @group_level = 0
       @examples = []
 
       @top_groups = {}
-      @printer = RspecRequirementFormatter::HtmlPrinter.new
+      @index_printer = RspecRequirementFormatter::HtmlPrinter.new(output)
     end
 
     def example_group_started(notification)
@@ -33,7 +29,8 @@ module RspecRequirementFormatter
       @example_group_number += 1
 
       if @group_level == 0
-        @printer = RspecRequirementFormatter::HtmlPrinter.new
+        file = File.open(File.join(@index_printer.dir, "#{notification.group.description.parameterize}.html"), 'w')
+        @printer = RspecRequirementFormatter::HtmlPrinter.new(file)
         @examples = []
       end
       @printer.start_example_group_division(notification.group, @group_level)
@@ -74,22 +71,7 @@ module RspecRequirementFormatter
     end
 
     def close(notification)
-      File.open("#{REQUIREMENTS_PATH}/index.html", 'w') do |f|
-        template_file = File.read(File.dirname(__FILE__) + '/../../templates/index.html.erb')
-        f.puts ERB.new(template_file).result(binding)
-      end
-    end
-
-    private
-
-    def create_path
-      FileUtils.mkdir_p(REQUIREMENTS_PATH)
-    end
-
-    def create_assets
-      dest_dir = "#{REQUIREMENTS_PATH}"
-      FileUtils.mkdir_p(dest_dir)
-      FileUtils.cp_r(File.dirname(__FILE__) + '/../../assets/', dest_dir)
+      @index_printer.output_index(@top_groups)
     end
   end
 end
