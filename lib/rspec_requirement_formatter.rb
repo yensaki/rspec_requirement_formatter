@@ -1,5 +1,6 @@
 require "rspec_requirement_formatter/version"
 
+require "rspec_requirement_formatter/html_formatter"
+
 module RspecRequirementFormatter
-  # Your code goes here...
 end
