@@ -1,6 +1,5 @@
 require 'rspec/core/formatters/base_formatter'
 require 'rspec_requirement_formatter/html_printer'
-require 'erb'
 
 module RspecRequirementFormatter
   class HtmlFormatter < RSpec::Core::Formatters::BaseFormatter
@@ -70,7 +69,7 @@ module RspecRequirementFormatter
       @top_groups[notification.group.description.parameterize] = notification.group
     end
 
-    def close(notification)
+    def close(_notification)
       @index_printer.output_index(@top_groups)
     end
   end
