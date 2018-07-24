@@ -19,7 +19,7 @@ module RspecRequirementFormatter
       @examples = []
 
       @top_groups = {}
-      @index_printer = RspecRequirementFormatter::HtmlPrinter.new(output)
+      @index_printer = RspecRequirementFormatter::HtmlPrinter.new(output, index: true)
     end
 
     def example_group_started(notification)
@@ -28,7 +28,9 @@ module RspecRequirementFormatter
       @example_group_number += 1
 
       if @group_level == 0
-        file = File.open(File.join(@index_printer.dir, "#{notification.group.description.parameterize}.html"), 'w')
+        dir = File.join(@index_printer.dir, "example_groups")
+        FileUtils.mkdir_p(dir)
+        file = File.open(File.join(dir, "#{notification.group.description.parameterize}.html"), 'w')
         @printer = RspecRequirementFormatter::HtmlPrinter.new(file)
         @examples = []
       end

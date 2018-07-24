@@ -6,7 +6,7 @@ module RspecRequirementFormatter
 
     attr_reader :dir
 
-    def initialize(output)
+    def initialize(output, index: false)
       if output.is_a?(File)
         @output = output
       else
@@ -15,8 +15,7 @@ module RspecRequirementFormatter
       end
       @dir = File.dirname(@output.path)
       @body = ""
-      create_path
-      create_assets
+      create_assets if index
     end
 
     def start_example_group_division(example_group, group_level)
@@ -55,10 +54,6 @@ module RspecRequirementFormatter
     end
 
     private
-
-    def create_path
-      FileUtils.mkdir_p(@dir)
-    end
 
     def create_assets
       FileUtils.mkdir_p(@dir)
