@@ -7,12 +7,15 @@ RSpec.describe RspecRequirementFormatter::HtmlFormatter do
 
   before(:all) { ENV.delete("TEST_ENV_NUMBER") }
 
-  let(:formatter_arguments) { ["--format", "RspecRequirementFormatter::HtmlFormatter", "-r", "rspec_requirement_formatter"] }
+  let(:formatter_arguments) { ["--format", "RspecRequirementFormatter::HtmlFormatter", "--out", output_path]}
+
+  let(:output_path) { File.join(EXAMPLE_DIR, "output.html") }
 
   describe "produced HTML" do
-    let(:expected_html) { File.read('') }
-    subject(:actual_html) do
-      described_class.new(output)
+    let(:expected_file_path) { File.expand_path('../../fixtures/output.html', __FILE__) }
+    let(:expected_html) { File.read(expected_file_path) }
+    let(:actual_html) do
+      File.read(output_path)
     end
 
     def safe_pty(command, directory)
@@ -40,7 +43,7 @@ RSpec.describe RspecRequirementFormatter::HtmlFormatter do
 
 
     it "is identical to the one we designed manually" do
-      output
+      expect(actual_html).to eq expected_html
     end
   end
 end
