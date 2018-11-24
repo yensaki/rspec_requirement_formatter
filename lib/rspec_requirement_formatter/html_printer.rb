@@ -21,22 +21,27 @@ module RspecRequirementFormatter
     def start_example_group_division(example_group, group_level)
       html = ''
       html << "<li class='list-group-item'>" unless group_level == 0
-      html << "  <div class='card-header'>#{example_group.description}</div>"
-      html << "  <ul class='list-group'>"
+      html << <<-EOS
+        <div class="card">
+          <div class='card-header'>#{example_group.description}</div>
+          <ul class='list-group'>
+      EOS
       @body << html
     end
 
     def example_division(example)
       @body << <<-EOS
         <li class="list-group-item">
-          <i>#{example.description}</i>
+          <span style='font-style: italic'>#{example.description}</span>
         </li>
       EOS
     end
 
     def finish_example_group_division(_example_group, group_level)
-      html = ''
-      html << "  </ul>"
+      html = <<-EOS
+          </ul>
+        </div>
+      EOS
       html << "</li>" unless group_level == 0
       @body << html
     end

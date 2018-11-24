@@ -24,7 +24,6 @@ module RspecRequirementFormatter
 
     def example_group_started(notification)
       super
-      @example_group_number ||= 0
       @example_group_number += 1
 
       if @group_level == 0
@@ -43,21 +42,15 @@ module RspecRequirementFormatter
     end
 
     def example_passed(passed)
-      example = passed.example
-      @examples << example
-      @printer.example_division(example)
+      create_example_division(passed.example)
     end
 
     def example_failed(failed)
-      example = failed.example
-      @examples << example
-      @printer.example_division(example)
+      create_example_division(failed.example)
     end
 
     def example_pending(pending)
-      example = pending.example
-      @examples << example
-      @printer.example_division(example)
+      create_example_division(pending.example)
     end
 
     def example_group_finished(notification)
@@ -73,6 +66,13 @@ module RspecRequirementFormatter
 
     def close(_notification)
       @index_printer.output_index(@top_groups)
+    end
+
+    private
+
+    def create_example_division(example)
+      @examples << example
+      @printer.example_division(example)
     end
   end
 end
