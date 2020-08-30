@@ -19,7 +19,8 @@ module RspecRequirementFormatter
 
     def example_group_started(notification)
       super
-      @requirement.add(notification.group)
+      group = notification.group
+      @requirement.add(group) if group.top_level?
     end
 
     def example_started(notification)

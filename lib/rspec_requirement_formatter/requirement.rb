@@ -22,7 +22,8 @@ module RspecRequirementFormatter
       {
         type: "example_group",
         description: example_group.description,
-        examples: example_group.examples.map { |example| example_hash(example) }
+        examples: example_group.examples.map { |example| example_hash(example) },
+        children: example_group.children.map { |example_group| group_hash(example_group) }
       }
     end
 
