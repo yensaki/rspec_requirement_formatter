@@ -13,10 +13,13 @@ module RspecRequirementFormatter
 
     def initialize(output)
       super(output)
+      @output = output
+      @requirement = RspecRequirementFormatter::Requirement.new
     end
 
     def example_group_started(notification)
       super
+      @requirement.add(notification.group)
     end
 
     def example_started(notification)
@@ -35,6 +38,7 @@ module RspecRequirementFormatter
     end
 
     def close(notification)
+      @output.write @requirement.to_json
     end
   end
 end
