@@ -2,19 +2,19 @@ require 'pty'
 require 'pry'
 require 'rspec_requirement_formatter'
 
-RSpec.describe RspecRequirementFormatter::HtmlFormatter do
+RSpec.describe RspecRequirementFormatter::Formatter do
   EXAMPLE_DIR = File.expand_path("../../../example/resources", __FILE__)
 
   before(:all) { ENV.delete("TEST_ENV_NUMBER") }
 
-  let(:formatter_arguments) { ["--format", "RspecRequirementFormatter::HtmlFormatter", "--out", output_path]}
+  let(:formatter_arguments) { ["--format", "RspecRequirementFormatter::Formatter", "--out", output_path]}
 
-  let(:output_path) { File.join(EXAMPLE_DIR, "output.html") }
+  let(:output_path) { File.join(EXAMPLE_DIR, "output.json") }
 
-  describe "produced HTML" do
-    let(:expected_file_path) { File.expand_path('../../fixtures/output.html', __FILE__) }
-    let(:expected_html) { File.read(expected_file_path) }
-    let(:actual_html) do
+  describe "produced JSON" do
+    let(:expected_file_path) { File.expand_path('../../fixtures/output.json', __FILE__) }
+    let(:expected_file) { File.read(expected_file_path) }
+    let(:actual_file) do
       File.read(output_path)
     end
 
@@ -39,11 +39,9 @@ RSpec.describe RspecRequirementFormatter::HtmlFormatter do
       safe_pty(command, EXAMPLE_DIR)
     end
 
-    let(:output) { execute_example_spec }
-
-
-    it "is identical to the one we designed manually" do
-      expect(actual_html).to eq expected_html
+    it 'generate JSON' do
+      execute_example_spec
+      expect(actual_file).to eq expected_file
     end
   end
 end
