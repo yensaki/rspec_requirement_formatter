@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "rspec_requirement_formatter"
+require "support/formatter_support"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

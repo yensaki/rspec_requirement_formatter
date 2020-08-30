@@ -1,46 +1,25 @@
-require 'pty'
 require 'pry'
+require 'json'
+require 'rspec/core/reporter'
+
 require 'rspec_requirement_formatter'
+# require '../support/formatter_support'
 
 RSpec.describe RspecRequirementFormatter::Formatter do
-  EXAMPLE_DIR = File.expand_path("../../../example/resources", __FILE__)
-
-  before(:all) { ENV.delete("TEST_ENV_NUMBER") }
-
-  let(:formatter_arguments) { ["--format", "RspecRequirementFormatter::Formatter", "--out", output_path]}
-
-  let(:output_path) { File.join(EXAMPLE_DIR, "output.json") }
+  include FormatterSupport
 
   describe "produced JSON" do
+    EXAMPLE_DIR = File.expand_path("../../../example/resources/*_spec.rb", __FILE__)
+
+    let(:output_path) { File.expand_path('../../fixtures/actual.json', __FILE__) }
     let(:expected_file_path) { File.expand_path('../../fixtures/output.json', __FILE__) }
     let(:expected_file) { File.read(expected_file_path) }
     let(:actual_file) do
       File.read(output_path)
     end
 
-    def safe_pty(command, directory)
-      sio = StringIO.new
-      begin
-        PTY.spawn(*command, chdir: directory) do |r,w,pid|
-          begin
-            r.each_line { |l| sio.puts(l) }
-          rescue Errno::EIO
-          ensure
-            ::Process.wait pid
-          end
-        end
-      rescue PTY::ChildExited
-      end
-      sio.string
-    end
-
-    def execute_example_spec
-      command = ["bundle", "exec", "rspec", *formatter_arguments]
-      safe_pty(command, EXAMPLE_DIR)
-    end
-
     it 'generate JSON' do
-      execute_example_spec
+      run_rspec(described_class.to_s, output: output_path, spec_path: [EXAMPLE_DIR])
       expect(actual_file).to eq expected_file
     end
   end
