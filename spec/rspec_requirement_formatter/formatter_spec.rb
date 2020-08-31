@@ -20,8 +20,7 @@ RSpec.describe RspecRequirementFormatter::Formatter do
         reporter.report(2) do |r|
           group.run(r)
         end
-        # run_rspec(described_class.to_s, output: output_path, spec_path: [example_spec_file_path])
-        expect(formatter_output.string).to eq expected_file
+        expect(JSON.parse(formatter_output.string)["example_groups"]).to eq JSON.parse(expected_file)
       end
     end
 
@@ -49,7 +48,7 @@ RSpec.describe RspecRequirementFormatter::Formatter do
         reporter.report(2) do |r|
           group.run(r)
         end
-        expect(formatter_output.string).to eq expected_file
+        expect(JSON.parse(formatter_output.string)["example_groups"]).to eq JSON.parse(expected_file)
       end
     end
   end

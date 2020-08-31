@@ -1,6 +1,8 @@
 require "rspec"
 require "rspec/core/formatters/base_formatter"
 
+require "json"
+
 module RspecRequirementFormatter
   class Formatter< RSpec::Core::Formatters::BaseFormatter
     RSpec::Core::Formatters.register self,
@@ -38,7 +40,11 @@ module RspecRequirementFormatter
     end
 
     def close(notification)
-      @output.write @requirement.to_json
+      result = {
+        created_at: Time.now.to_s,
+        example_groups: @requirement.to_a
+      }.to_json
+      @output.write result
     end
   end
 end

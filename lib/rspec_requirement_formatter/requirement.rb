@@ -1,5 +1,3 @@
-require "json"
-
 module RspecRequirementFormatter
   class Requirement
     attr_accessor :example_groups
@@ -12,8 +10,8 @@ module RspecRequirementFormatter
       @example_groups << example_group
     end
 
-    def to_json
-      @example_groups.map { |example_group| group_hash(example_group) }.to_json
+    def to_a
+      @example_groups.map { |example_group| group_hash(example_group) }
     end
 
     private
