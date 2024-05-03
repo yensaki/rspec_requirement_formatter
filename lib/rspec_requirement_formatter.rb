@@ -1,6 +1,8 @@
 require "rspec_requirement_formatter/version"
-require "rspec_requirement_formatter/formatter"
-require "rspec_requirement_formatter/requirement"
+require "rspec"
+require "rspec/core/formatters/base_formatter"
+
+# require "json"
 
 class RspecRequirementFormatter < RSpec::Core::Formatters::BaseFormatter
   RSpec::Core::Formatters.register self,
