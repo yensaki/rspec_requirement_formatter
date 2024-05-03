@@ -1,1 +1,8 @@
-[{"type":"example_group","description":"one apiece","examples":[{"type":"example","description":"succeeds"}],"children":[]}]
+{
+  "id": "./spec/rspec_requirement_formatter_spec.rb[2:1]",
+  "description": "succeeds",
+  "full_description": "one apiece succeeds",
+  "file_path": "./spec/rspec_requirement_formatter_spec.rb",
+  "status": "passed",
+  "line_number": 22
+}
