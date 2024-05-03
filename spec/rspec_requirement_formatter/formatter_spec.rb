@@ -5,7 +5,7 @@ require 'rspec/core/reporter'
 require 'rspec_requirement_formatter'
 # require '../support/formatter_support'
 
-RSpec.describe RspecRequirementFormatter::Formatter do
+RSpec.describe RspecRequirementFormatter do
   include FormatterSupport
 
   describe "output" do

@@ -1,3 +1,3 @@
-module RspecRequirementFormatter
+class RspecRequirementFormatter
   VERSION = "0.1.0"
 end
