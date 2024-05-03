@@ -14,7 +14,7 @@ RSpec.describe RspecRequirementFormatter do
 
   describe "output" do
     context "When simple RSpec group," do
-      let!(:expected_file_path) { File.expand_path('../../fixtures/expected/simple_example_group.json', __FILE__) }
+      let!(:expected_file_path) { File.expand_path('./fixtures/expected/simple_example_group.json', __FILE__) }
       let!(:expected_file) { File.read(expected_file_path) }
 
       it "generates formatted JSON" do
@@ -29,7 +29,7 @@ RSpec.describe RspecRequirementFormatter do
     end
 
     context "When nested RSpec groups," do
-      let!(:expected_file_path) { File.expand_path('../../fixtures/expected/nested_example_groups.json', __FILE__) }
+      let!(:expected_file_path) { File.expand_path('./fixtures/expected/nested_example_groups.json', __FILE__) }
       let!(:expected_file) { File.read(expected_file_path) }
 
       it "generates formatted JSON" do
