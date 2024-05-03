@@ -2,23 +2,26 @@ require "rspec_requirement_formatter/version"
 require "rspec"
 require "rspec/core/formatters/base_formatter"
 
-# require "json"
+require "json"
 
 class RspecRequirementFormatter < RSpec::Core::Formatters::BaseFormatter
   RSpec::Core::Formatters.register self,
                                    :start,
                                    :stop
 
+  attr_reader :output_hash
+
   def initialize(output)
     super(output)
     @output = output
-    @hash_group = []
+    @output_hash = {}
   end
 
   def stop(group_notification)
-    @hash_group << group_notification.notifications.map do |notification|
+    @output_hash[:examples] = group_notification.notifications.map do |notification|
       format_example(notification.example)
     end
+    @output.write @output_hash.to_json
   end
 
   private
